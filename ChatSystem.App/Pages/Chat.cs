@@ -30,6 +30,12 @@
                 Author = Message.Author;
             }
 
+            if (Message.Text is null
+                || Message.Author is null)
+            {
+                return;
+            }
+
             Messages.Add(Message);
             if (Messages.Count > 20)
             {
