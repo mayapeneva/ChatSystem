@@ -1,7 +1,7 @@
-﻿namespace ChatSystem.Infrastructure.Configurations
+﻿namespace ChatSystem.Infrastructure.ConfigurationSettings
 {
-    using System;
     using Microsoft.Extensions.Configuration;
+    using System;
 
     internal static class ConfigurationHelper
     {

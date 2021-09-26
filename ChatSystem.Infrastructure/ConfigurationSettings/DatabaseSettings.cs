@@ -1,23 +1,24 @@
-﻿namespace ChatSystem.Infrastructure.Configurations
+﻿namespace ChatSystem.Infrastructure.ConfigurationSettings
 {
     using Microsoft.Extensions.Configuration;
 
-    internal class RabbitMQSettings
+    internal class DatabaseSettings
     {
-        private const string Key = "rabbitMQ"; 
+        public const string Key = "postgres";
         private const string HostKey = "host";
         private const string PortKey = "port";
         private const string UsernameKey = "username";
         private const string PasswordKey = "password";
+        public const string NameKey = "name";
 
-        public RabbitMQSettings(IConfiguration configuration)
+        public DatabaseSettings(IConfiguration configuration)
         {
             var settings = configuration.GetSection(Key);
-
             Host = settings.GetStringConfigurationValue(HostKey);
             Port = settings.GetIntConfigurationValue(PortKey);
             Username = settings.GetStringConfigurationValue(UsernameKey);
             Password = settings.GetStringConfigurationValue(PasswordKey);
+            Name = settings.GetStringConfigurationValue(NameKey);
         }
 
         public string Host { get; }
@@ -27,5 +28,10 @@
         public string Username { get; }
 
         public string Password { get; }
+
+        public string Name { get; }
+
+        public string GetConnectionString() =>
+            $"Host={this.Host};Port={this.Port};Database={this.Name};Username={this.Username};Password={this.Password}";
     }
 }

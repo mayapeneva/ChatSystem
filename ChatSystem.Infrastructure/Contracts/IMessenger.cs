@@ -5,6 +5,6 @@
 
     public interface IMessenger
     {
-        Task SendAsync<T>(string exchange, string queue, string key, T message, CancellationToken cancellationToken);
+        Task PublishAsync<T>(string exchange, string queue, string key, T message, CancellationToken cancellationToken);
     }
 }

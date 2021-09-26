@@ -1,6 +1,6 @@
 ﻿namespace ChatSystem.Infrastructure
 {
-    using ChatSystem.Infrastructure.Configurations;
+    using ConfigurationSettings;
     using Contracts;
     using Newtonsoft.Json;
     using RabbitMQ.Client;
@@ -36,11 +36,11 @@
             };
         }
 
-        public async Task SendAsync<T>(string exchange, string queue, string key, T message, CancellationToken cancellationToken)
+        public async Task PublishAsync<T>(string exchange, string queue, string key, T message, CancellationToken cancellationToken)
         {
             if (message is null)
             {
-                throw new Exception($"{nameof(IMessenger)}.{nameof(SendAsync)}.{nameof(message)}");
+                throw new Exception($"{nameof(IMessenger)}.{nameof(PublishAsync)}.{nameof(message)}");
             }
 
             if (!IsConnected)
@@ -55,6 +55,11 @@
                 channel.QueueBindNoWait(queue, exchange, key, null);
                 channel.BasicPublish(exchange, key, null, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message)));
             }
+        }
+
+        public Task GetAsync<T>(string exchange, string queue, string key, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
 
         private async Task ConnectAsync(CancellationToken cancellationToken)

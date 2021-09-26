@@ -1,14 +1,14 @@
-using ChatSystem.App.Contracts;
-using ChatSystem.App.Services;
-using ChatSystem.Infrastructure.Configurations;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
 namespace ChatSystem.App
 {
+    using Contracts;
+    using Infrastructure.ConfigurationSettings;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Services;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -23,7 +23,7 @@ namespace ChatSystem.App
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<IMessageService, MessageService>();
-            services.AddInfrastructure(Configuration);
+            services.RegisterRabbitMQ(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

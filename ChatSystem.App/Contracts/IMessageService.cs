@@ -1,6 +1,6 @@
 ﻿namespace ChatSystem.App.Contracts
 {
-    using Models;
+    using Infrastructure.Models;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 

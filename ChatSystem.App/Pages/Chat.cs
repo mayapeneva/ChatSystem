@@ -1,8 +1,8 @@
 ﻿namespace ChatSystem.App.Pages
 {
     using Contracts;
+    using Infrastructure.Models;
     using Microsoft.AspNetCore.Components;
-    using Models;
     using System.Collections.Generic;
 
     public partial class Chat
@@ -33,7 +33,7 @@
 
             Messages.Add(Message);
             if (Messages.Count > 20)
-            { 
+            {
                 Messages.RemoveAt(0);
             }
 
