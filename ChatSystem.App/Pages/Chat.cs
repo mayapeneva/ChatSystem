@@ -13,8 +13,6 @@
         [Parameter]
         public Message Message { get; set; }
 
-        public string Author { get; set; }
-
         public List<Message> Messages { get; set; }
 
         protected override void OnInitialized()
@@ -25,25 +23,23 @@
 
         protected void Create()
         {
-            if (Message.Author != null)
-            {
-                Author = Message.Author;
-            }
-
             if (Message.Text is null
-                || Message.Author is null)
+                || (Message.Author is null))
             {
                 return;
             }
 
+            MessageService.SendAsync(Message);
+
             Messages.Add(Message);
             if (Messages.Count > 20)
-            {
+            { 
                 Messages.RemoveAt(0);
             }
 
+            var author = Message.Author;
             Message = new Message();
-            Message.Author = Author;
+            Message.Author = author;
         }
     }
 }

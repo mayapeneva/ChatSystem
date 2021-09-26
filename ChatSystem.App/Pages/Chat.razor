@@ -1,9 +1,9 @@
 ﻿@page "/chat"
 
 <section class="chat">
-    @if (Author != null)
+    @if (Message.Author != null)
     {
-        <h3>Add message for @Author</h3>
+        <h3>Add message for @Message.Author</h3>
     }
     else
     {

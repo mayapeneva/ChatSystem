@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+    postgres:
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: supersecret
+            POSTGRES_DB: chatsystem-db
+            POSTGRES_USER: chatsystem-user
+        ports:
+            - 5432:5432
+        healthcheck:
+            test: ["CMD", "pg_isready", "-q", "-U", "chatsystem-user", "-d", "chatsystem-db" ]
+            interval: 5s
+            timeout: 3s
+            retries: 3
+      
+    rabbitmq:
+        image: rabbitmq:3-management
+        ports: 
+            - 5672:5672
+            - 15672:15672            
+        environment:
+            RABBITMQ_PASSWORD: supersecret
+            RABBITMQ_USER: chatsystem-user
+    
