@@ -8,4 +8,10 @@
     <ProjectReference Include="..\ChatSystem.Infrastructure\ChatSystem.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -70,7 +70,7 @@
 
         private async Task SaveMessageAsync(List<Message> messages)
         {
-            // TDOD retry policy
+            // TODO retry policy
             var result = await messageService.InsertAsync(messages);
             if (result)
             {

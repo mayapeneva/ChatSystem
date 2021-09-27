@@ -1,7 +1,6 @@
 namespace ChatSystem.MessageHistoryAPI
 {
-    using ChatSystem.MessageHistoryAPI.Contracts;
-    using ChatSystem.MessageHistoryAPI.Services;
+    using Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -21,7 +20,8 @@ namespace ChatSystem.MessageHistoryAPI
         {
             services.AddControllers();
             services.AddLogging();
-            services.RegisterMessageHistoryService(Configuration);
+            services.RegisterMessageHistoryService(Configuration)
+                .RegisterDatabase(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

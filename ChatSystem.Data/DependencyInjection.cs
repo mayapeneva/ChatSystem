@@ -12,7 +12,10 @@
             var databaseSettings = new DatabaseSettings(configuration);
             configuration.GetSection(nameof(DatabaseSettings)).Bind(databaseSettings);
             services.AddSingleton(databaseSettings);
-            services.AddDbContext<ChatSystemContext>(options => options.UseNpgsql(new DatabaseSettings(configuration).GetConnectionString()));
+            services.AddDbContext<ChatSystemContext>(options =>
+                options.UseSqlServer(new DatabaseSettings(configuration).GetConnectionString()));
+            //options.UseNpgsql(new DatabaseSettings(configuration).GetConnectionString()));
+            //
             return services;
         }
     }
