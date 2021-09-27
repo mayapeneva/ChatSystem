@@ -3,6 +3,7 @@
     using Contracts;
     using Infrastructure.Models;
     using Microsoft.AspNetCore.Components;
+    using System;
     using System.Collections.Generic;
 
     public partial class Chat
@@ -29,6 +30,8 @@
                 return;
             }
 
+            //TODO use connection ID or add User Identity
+            Message.AuthorId = Guid.NewGuid().ToString();
             MessageService.SendAsync(Message);
 
             Messages.Add(Message);
@@ -38,8 +41,10 @@
             }
 
             var author = Message.Author;
-            Message = new Message();
-            Message.Author = author;
+            Message = new Message
+            {
+                Author = author
+            };
         }
     }
 }

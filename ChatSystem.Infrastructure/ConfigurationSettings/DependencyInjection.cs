@@ -1,6 +1,6 @@
 ﻿namespace ChatSystem.Infrastructure.ConfigurationSettings
 {
-    using Infrastructure.Contracts;
+    using Contracts;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 

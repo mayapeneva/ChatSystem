@@ -1,15 +1,15 @@
 ﻿namespace ChatSystem.MessageHistoryAPI
 {
-    using ChatSystem.MessageHistoryAPI.Contracts;
-    using ChatSystem.MessageHistoryAPI.Services;
+    using Contracts;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Services;
 
     public static class DependencyInjection
     {
         public static IServiceCollection RegisterMessageHistoryService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IMessageHistoryService, MessageHistoryService>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
             return services;
         }
     }

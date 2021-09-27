@@ -1,10 +1,10 @@
 ﻿namespace ChatSystem.Message.Importer
 {
-    using ChatSystem.Infrastructure.Common;
-    using ChatSystem.Infrastructure.ConfigurationSettings;
-    using ChatSystem.Infrastructure.Contracts;
-    using ChatSystem.Infrastructure.Models;
-    using ChatSystem.MessageHistoryAPI.Contracts;
+    using Infrastructure.Common;
+    using Infrastructure.ConfigurationSettings;
+    using Infrastructure.Contracts;
+    using Infrastructure.Models;
+    using MessageHistoryAPI.Contracts;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using System;
@@ -18,17 +18,17 @@
 
         private readonly IntervalSettings settings;
         private readonly IMessenger messenger;
-        private readonly IMessageHistoryService messageService;
+        private readonly IMessageRepository messageRepository;
         private readonly ILogger<ApplicationService> logger;
 
         public ApplicationService(IntervalSettings settings,
             IMessenger messenger,
-            IMessageHistoryService messageService,
+            IMessageRepository messageRepository,
             ILogger<ApplicationService> logger)
         {
             this.settings = settings;
             this.messenger = messenger;
-            this.messageService = messageService;
+            this.messageRepository = messageRepository;
             this.logger = logger;
         }
 
@@ -45,6 +45,7 @@
                         if (messages.Count > BatchSize)
                         {
                             await SaveMessageAsync(messages);
+                            messages.RemoveRange(messages.Count - BatchSize, BatchSize);
                         }
                     }
 
@@ -71,14 +72,13 @@
         private async Task SaveMessageAsync(List<Message> messages)
         {
             // TODO retry policy
-            var result = await messageService.InsertAsync(messages);
-            if (result)
+            try
             {
-                messages.RemoveRange(messages.Count - BatchSize, BatchSize);
+                await messageRepository.InsertAsync(messages);
             }
-            else
+            catch (Exception ex)
             {
-                logger.LogError("Not able to save the following messages: ", messages);
+                logger.LogError($"Not able to save messages: {ex.Message}", messages);
             }
         }
     }

@@ -1,8 +1,8 @@
 ﻿namespace ChatSystem.Message.Importer
 {
-    using ChatSystem.MessageHistoryAPI;
     using Data;
     using Infrastructure.ConfigurationSettings;
+    using MessageHistoryAPI;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ChatSystem.Infrastructure\ChatSystem.Infrastructure.csproj" />
+    <ProjectReference Include="..\ChatSystem.MessageHistoryAPI\ChatSystem.MessageHistoryAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

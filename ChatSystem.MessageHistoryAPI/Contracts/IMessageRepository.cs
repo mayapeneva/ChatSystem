@@ -4,8 +4,10 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface IMessageHistoryService
+    public interface IMessageRepository
     {
-        Task<bool> InsertAsync(IEnumerable<Message> messages);
+        IEnumerable<Message> Get();
+
+        Task InsertAsync(IEnumerable<Message> messages);
     }
 }

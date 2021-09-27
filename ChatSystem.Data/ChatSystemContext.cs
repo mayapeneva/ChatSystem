@@ -1,6 +1,6 @@
 ﻿namespace ChatSystem.Data
 {
-    using ChatSystem.Data.Entities;
+    using Entities;
     using Microsoft.EntityFrameworkCore;
 
     public class ChatSystemContext : DbContext
