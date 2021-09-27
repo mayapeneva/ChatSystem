@@ -31,7 +31,7 @@
 
         public string Name { get; }
 
-        public string GetConnectionString() =>
-            $"Host={this.Host};Port={this.Port};Database={this.Name};Username={this.Username};Password={this.Password}";
+        public string GetConnectionString() => "Server=.\\SQLExpress;Database=chatsystem-db;Trusted_Connection=True";
+            //$"Host={this.Host};Port={this.Port};Database={this.Name};Username={this.Username};Password={this.Password}";
     }
 }
