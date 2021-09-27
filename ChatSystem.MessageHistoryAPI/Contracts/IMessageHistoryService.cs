@@ -1,11 +1,11 @@
 ﻿namespace ChatSystem.MessageHistoryAPI.Contracts
 {
-    using System;
+    using Infrastructure.Models;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
-    interface IMessageHistoryService
+    public interface IMessageHistoryService
     {
+        Task<bool> InsertAsync(IEnumerable<Message> messages);
     }
 }

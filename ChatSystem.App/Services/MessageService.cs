@@ -1,5 +1,6 @@
 ﻿namespace ChatSystem.App.Services
 {
+    using ChatSystem.Infrastructure.Common;
     using Contracts;
     using Infrastructure.Contracts;
     using Infrastructure.Models;
@@ -23,7 +24,7 @@
 
         public async Task SendAsync<Message>(Message message)
         {
-            await messenger.PublishAsync("chat-messages", "messages-queue", "message-key", message, CancellationToken.None);
+            await messenger.PublishDirectAsync(Constants.Exchange, Constants.Queue, Constants.Key, message, CancellationToken.None);
         }
     }
 }

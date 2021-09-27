@@ -21,7 +21,7 @@
         [HttpGet]
         public IEnumerable<Message> Get()
         {
-            
+            return new List<Message>();
         }
     }
 }

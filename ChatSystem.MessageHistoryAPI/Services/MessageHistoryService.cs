@@ -1,11 +1,15 @@
 ﻿namespace ChatSystem.MessageHistoryAPI.Services
 {
-    using System;
+    using Contracts;
+    using Infrastructure.Models;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
-    public class MessageHistoryService
+    internal class MessageHistoryService : IMessageHistoryService
     {
+        public Task<bool> InsertAsync(IEnumerable<Message> messages)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
