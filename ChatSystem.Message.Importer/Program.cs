@@ -1,5 +1,7 @@
 ﻿namespace ChatSystem.Message.Importer
 {
+    using ChatSystem.MessageHistoryAPI;
+    using Data;
     using Infrastructure.ConfigurationSettings;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -21,13 +23,16 @@
                         config.AddCommandLine(args);
                     }
                 });
+
             builder
                 .ConfigureServices((hostContext, services) =>
                     {
                         services
+                            .AddLogging()
                             .RegisterIntervalSettings(hostContext.Configuration)
                             .RegisterRabbitMQ(hostContext.Configuration)
                             .RegisterDatabase(hostContext.Configuration)
+                            .RegisterMessageHistoryService(hostContext.Configuration)
                             .AddHostedService<ApplicationService>();
                     });
 

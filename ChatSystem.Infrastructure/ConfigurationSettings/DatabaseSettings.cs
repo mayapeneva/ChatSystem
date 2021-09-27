@@ -2,7 +2,7 @@
 {
     using Microsoft.Extensions.Configuration;
 
-    internal class DatabaseSettings
+    public class DatabaseSettings
     {
         public const string Key = "postgres";
         private const string HostKey = "host";

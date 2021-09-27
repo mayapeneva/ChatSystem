@@ -9,7 +9,7 @@
     {
         public Task<bool> InsertAsync(IEnumerable<Message> messages)
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult(true);
         }
     }
 }

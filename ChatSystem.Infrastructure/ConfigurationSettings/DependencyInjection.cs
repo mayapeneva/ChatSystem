@@ -1,7 +1,6 @@
 ﻿namespace ChatSystem.Infrastructure.ConfigurationSettings
 {
     using Infrastructure.Contracts;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -13,12 +12,6 @@
             configuration.GetSection(nameof(RabbitMQSettings)).Bind(rabbitMQSettings);
             services.AddSingleton(rabbitMQSettings);
             services.AddSingleton<IMessenger, RabbitMQMessenger>();
-            return services;
-        }
-
-        public static IServiceCollection RegisterDatabase(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddDbContext<ChatsystemContext>(options => options.UseNpgsql(new DatabaseSettings(configuration).GetConnectionString()));
             return services;
         }
 

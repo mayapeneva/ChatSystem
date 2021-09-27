@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ChatSystem.Data\ChatSystem.Data.csproj" />
     <ProjectReference Include="..\ChatSystem.Infrastructure\ChatSystem.Infrastructure.csproj" />
     <ProjectReference Include="..\ChatSystem.MessageHistoryAPI\ChatSystem.MessageHistoryAPI.csproj" />
   </ItemGroup>

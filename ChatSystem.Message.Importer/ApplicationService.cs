@@ -44,17 +44,13 @@
                         messages.Add(message);
                         if (messages.Count > BatchSize)
                         {
-                            // TDOD retry policy
-                            var result = await messageService.InsertAsync(messages);
-                            if (result)
-                            {
-                                messages.RemoveRange(messages.Count - BatchSize, BatchSize);
-                            }
-                            else
-                            {
-                                logger.LogError("Not able to save the following messages: ", message);
-                            }
+                            await SaveMessageAsync(messages);
                         }
+                    }
+
+                    if (messages.Count > 0)
+                    {
+                        await SaveMessageAsync(messages);
                     }
                 }
                 catch (Exception ex)
@@ -69,6 +65,20 @@
                     seconds: settings.Second);
 
                 await Task.Delay(timeSpan, stoppingToken);
+            }
+        }
+
+        private async Task SaveMessageAsync(List<Message> messages)
+        {
+            // TDOD retry policy
+            var result = await messageService.InsertAsync(messages);
+            if (result)
+            {
+                messages.RemoveRange(messages.Count - BatchSize, BatchSize);
+            }
+            else
+            {
+                logger.LogError("Not able to save the following messages: ", messages);
             }
         }
     }

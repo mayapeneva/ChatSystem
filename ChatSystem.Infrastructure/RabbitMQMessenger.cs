@@ -2,7 +2,6 @@
 {
     using ConfigurationSettings;
     using Contracts;
-    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using RabbitMQ.Client;
     using System;
@@ -19,10 +18,8 @@
         private readonly ConnectionFactory factory;
         private readonly IDictionary<string, object> queueDeclarationArguments;
         private IConnection connection;
-        private readonly Logger<RabbitMQMessenger> logger;
 
-        public RabbitMQMessenger(RabbitMQSettings settings,
-            Logger<RabbitMQMessenger> logger)
+        public RabbitMQMessenger(RabbitMQSettings settings)
         {
             configuration = settings;
             semaphore = new SemaphoreSlim(1, 1);
@@ -39,8 +36,6 @@
             {
                 { "x-queue-type", "quorum" }
             };
-
-            this.logger = logger;
         }
 
         public async Task PublishDirectAsync<Message>(string exchange, string queue, string key, Message message, CancellationToken cancellationToken)
@@ -85,7 +80,7 @@
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, $"{nameof(RabbitMQMessenger)}.{nameof(GetDirectAsync)}.{resultBody}");
+                    throw new Exception($"{nameof(RabbitMQMessenger)}.{nameof(GetDirectAsync)}.{resultBody}", ex.GetBaseException());
                 }
 
                 yield return message;

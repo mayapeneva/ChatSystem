@@ -4,7 +4,7 @@
     {
         public const string Exchange = "chat-messages";
 
-        public const string Key = "message-key";
+        public const string Key = "messages-key";
 
         public const string Queue = "messages-queue";
     }
