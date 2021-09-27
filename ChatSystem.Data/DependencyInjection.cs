@@ -1,9 +1,11 @@
 ﻿namespace ChatSystem.Data
 {
     using Infrastructure.ConfigurationSettings;
+    using Infrastructure.Contracts;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Services;
 
     public static class DependencyInjection
     {
@@ -16,6 +18,12 @@
                 options.UseSqlServer(new DatabaseSettings(configuration).GetConnectionString()));
             //options.UseNpgsql(new DatabaseSettings(configuration).GetConnectionString()));
             //
+            return services;
+        }
+
+        public static IServiceCollection RegisterMessageRepository(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<IMessageRepository, MessageRepository>();
             return services;
         }
     }

@@ -4,7 +4,6 @@
     using Infrastructure.ConfigurationSettings;
     using Infrastructure.Contracts;
     using Infrastructure.Models;
-    using MessageHistoryAPI.Contracts;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using System;
@@ -44,14 +43,14 @@
                         messages.Add(message);
                         if (messages.Count > BatchSize)
                         {
-                            await SaveMessageAsync(messages);
+                            await SaveMessageAsync(messages, stoppingToken);
                             messages.RemoveRange(messages.Count - BatchSize, BatchSize);
                         }
                     }
 
                     if (messages.Count > 0)
                     {
-                        await SaveMessageAsync(messages);
+                        await SaveMessageAsync(messages, stoppingToken);
                     }
                 }
                 catch (Exception ex)
@@ -69,12 +68,12 @@
             }
         }
 
-        private async Task SaveMessageAsync(List<Message> messages)
+        private async Task SaveMessageAsync(List<Message> messages, CancellationToken stoppingToken)
         {
             // TODO retry policy
             try
             {
-                await messageRepository.InsertAsync(messages);
+                await messageRepository.InsertAsync(messages, stoppingToken);
             }
             catch (Exception ex)
             {

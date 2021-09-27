@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Components;
     using System;
     using System.Collections.Generic;
+    using System.Threading;
 
     public partial class Chat
     {
@@ -19,7 +20,7 @@
         protected override void OnInitialized()
         {
             Message = new Message();
-            Messages = new List<Message>(MessageService.GetLastMessages());
+            Messages = new List<Message>(MessageService.GetLastMessages(cancellationToken: CancellationToken.None));
         }
 
         protected void Create()

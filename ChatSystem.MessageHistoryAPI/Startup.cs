@@ -20,7 +20,7 @@ namespace ChatSystem.MessageHistoryAPI
         {
             services.AddControllers();
             services.AddLogging();
-            services.RegisterMessageHistoryService(Configuration)
+            services.RegisterMessageRepository(Configuration)
                 .RegisterDatabase(Configuration);
         }
 

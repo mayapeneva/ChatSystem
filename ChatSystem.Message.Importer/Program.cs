@@ -32,7 +32,7 @@
                             .RegisterIntervalSettings(hostContext.Configuration)
                             .RegisterRabbitMQ(hostContext.Configuration)
                             .RegisterDatabase(hostContext.Configuration)
-                            .RegisterMessageHistoryService(hostContext.Configuration)
+                            .RegisterMessageRepository(hostContext.Configuration)
                             .AddHostedService<ApplicationService>();
                     });
 

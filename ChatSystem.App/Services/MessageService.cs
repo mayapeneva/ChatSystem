@@ -4,7 +4,6 @@
     using Infrastructure.Common;
     using Infrastructure.Contracts;
     using Infrastructure.Models;
-    using MessageHistoryAPI.Contracts;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
@@ -21,9 +20,9 @@
             this.messenger = messenger;
         }
 
-        public IEnumerable<Message> GetLastMessages()
+        public IEnumerable<Message> GetLastMessages(CancellationToken cancellationToken)
         {
-            return messageRepository.Get();
+            return messageRepository.Get(cancellationToken, 20);
         }
 
         public async Task SendAsync<Message>(Message message)
