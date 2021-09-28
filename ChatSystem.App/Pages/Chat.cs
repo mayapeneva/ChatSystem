@@ -20,7 +20,9 @@
         protected override void OnInitialized()
         {
             Message = new Message();
-            Messages = new List<Message>(MessageService.GetLastMessages(cancellationToken: CancellationToken.None));
+
+            var messages = MessageService.GetLastMessages(cancellationToken: CancellationToken.None);
+            Messages = messages is null ? new List<Message>() : new List<Message>(messages);
         }
 
         protected void Create()

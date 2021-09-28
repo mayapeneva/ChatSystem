@@ -25,9 +25,9 @@
             {
                 var dbMessagesCount = messages.Count();
                 var takeCount = count > dbMessagesCount ? count : dbMessagesCount;
+
                 return messages.OrderByDescending(m => m.TimeStamp)
                         .Take(takeCount)
-                        .ToList()
                         .Select(m => new Message
                         {
                             AuthorId = m.AuthorId,
@@ -42,7 +42,21 @@
 
         public IEnumerable<Message> GetPerTimePeriod(TimeFrame timeFrame, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var messages = db.Messages;
+            if (messages.Any())
+            {
+                return messages.Where(m => DateTime.Compare(m.TimeStamp, timeFrame.StartTime) > 0
+                    && DateTime.Compare(m.TimeStamp,timeFrame.EndTime) < 0)
+                        .Select(m => new Message
+                        {
+                            AuthorId = m.AuthorId,
+                            Author = m.Author.Name,
+                            Text = m.Text,
+                            TimeStamp = m.TimeStamp
+                        });
+            }
+
+            return null;
         }
 
         public async Task InsertAsync(IEnumerable<Message> messages, CancellationToken cancellationToken)
