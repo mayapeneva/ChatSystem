@@ -5,6 +5,7 @@
     using Infrastructure.Contracts;
     using Infrastructure.Models;
     using Infrastructure.Validators;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
@@ -19,29 +20,60 @@
             this.repository = repository;
         }
 
-        public IEnumerable<Message> Get(CancellationToken cancellationToken, int count = 0)
+        public InternalResult<IEnumerable<Message>> Get(CancellationToken cancellationToken, int count = 0)
         {
-            return repository.Get(cancellationToken, count);
+            try
+            {
+                var result = repository.Get(cancellationToken, count);
+                if (result is null)
+                {
+                    return new InternalResult<IEnumerable<Message>>(Constants.NoMessagesFound, InternalStatusCode.NotFound, string.Empty);
+                }
+
+                return new InternalResult<IEnumerable<Message>>(result);
+            }
+            catch (Exception ex)
+            {
+                return new InternalResult<IEnumerable<Message>>(Constants.CouldNotLoadMessages, InternalStatusCode.InternalServerError, ex.Message);
+            }
         }
 
         public InternalResult<IEnumerable<Message>> GetPerTimePeriod(TimeFrame timeFrame, CancellationToken cancellationToken)
         {
-            if (true)
+            try
             {
                 var validator = new TimeFrameValidator();
-                var result = validator.Validate(timeFrame);
-                if (!result.IsValid)
+                var validationResult = validator.Validate(timeFrame);
+                if (!validationResult.IsValid)
                 {
-                    return new InternalResult<IEnumerable<Message>>("", InternalStatusCode.BadRequest, result.Errors.Select(e => e.ErrorMessage));
+                    return new InternalResult<IEnumerable<Message>>("The time frame provided is not valid.", InternalStatusCode.BadRequest, validationResult.Errors.Select(e => e.ErrorMessage));
                 }
-            }
 
-            return new InternalResult<IEnumerable<Message>>(repository.GetPerTimePeriod(timeFrame, cancellationToken);
+                var result = repository.GetPerTimePeriod(timeFrame, cancellationToken);
+                if (result is null)
+                {
+                    return new InternalResult<IEnumerable<Message>>(Constants.NoMessagesFound, InternalStatusCode.NotFound, string.Empty);
+                }
+
+                return new InternalResult<IEnumerable<Message>>(result);
+            }
+            catch (Exception ex)
+            {
+                return new InternalResult<IEnumerable<Message>>(Constants.CouldNotLoadMessages, InternalStatusCode.InternalServerError, ex.Message);
+            }
         }
 
-        public async Task SaveAsync(IEnumerable<Message> messages, CancellationToken cancellationToken)
+        public async Task<InternalResult<IEnumerable<Message>>> SaveAsync(IEnumerable<Message> messages, CancellationToken cancellationToken)
         {
-            await repository.InsertAsync(messages, cancellationToken);
+            try
+            {
+                await repository.InsertAsync(messages, cancellationToken);
+                return new InternalResult<IEnumerable<Message>>(null);
+            }
+            catch (Exception ex)
+            {
+                return new InternalResult<IEnumerable<Message>>(Constants.CouldNotSaveMessages, InternalStatusCode.InternalServerError, ex.Message);
+            }
         }
     }
 }

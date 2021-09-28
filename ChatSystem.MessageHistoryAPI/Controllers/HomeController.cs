@@ -19,21 +19,21 @@
         }
 
         [HttpGet("messages/{count}")]
-        public IEnumerable<Message> Get(CancellationToken cancellationToken, int count = default)
+        public IActionResult Get(CancellationToken cancellationToken, int count = default)
         {
             return CreateOkOrErrorResult(manager.Get(cancellationToken, count));
         }
 
         [HttpGet("messages")]
-        public IEnumerable<Message> GetForPeriod([FromBody] TimeFrame timeFrame, CancellationToken cancellationToken)
+        public IActionResult GetForPeriod([FromBody] TimeFrame timeFrame, CancellationToken cancellationToken)
         {
             return CreateOkOrErrorResult(manager.GetPerTimePeriod(timeFrame, cancellationToken));
         }
 
         [HttpPost("messages")]
-        public async Task SaveAsync([FromBody] IEnumerable<Message> messages, CancellationToken cancellationToken)
+        public async Task<IActionResult> SaveAsync([FromBody] IEnumerable<Message> messages, CancellationToken cancellationToken)
         {
-            await CreateOkOrErrorResult(manager.SaveAsync(messages, cancellationToken));
+            return CreateOkOrErrorResult(await manager.SaveAsync(messages, cancellationToken));
         }
     }
 }

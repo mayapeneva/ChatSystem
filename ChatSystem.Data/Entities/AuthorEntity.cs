@@ -12,6 +12,6 @@
         [Required]
         public string Name { get; set; }
 
-        public ICollection<MessageEntity> Messages { get; set; }
+        public virtual ICollection<MessageEntity> Messages { get; set; }
     }
 }

@@ -8,6 +8,7 @@
     {
         public TimeFrameValidator()
         {
+            // TODO: add validation start time to be before end time
             RuleFor(x => x.StartTime)
                 .NotEmpty()
                 .LessThanOrEqualTo(DateTime.Now);

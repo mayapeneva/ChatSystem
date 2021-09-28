@@ -21,12 +21,12 @@
         public IEnumerable<Message> Get(CancellationToken cancellationToken, int count)
         {
             var messages = db.Messages;
-            if (messages.Count() > 0)
+            if (messages.Any())
             {
-                if (count != default)
-                {
-                    return messages.OrderByDescending(m => m.TimeStamp)?
-                        .Take(count)
+                var dbMessagesCount = messages.Count();
+                var takeCount = count > dbMessagesCount ? count : dbMessagesCount;
+                return messages.OrderByDescending(m => m.TimeStamp)
+                        .Take(takeCount)
                         .ToList()
                         .Select(m => new Message
                         {
@@ -35,17 +35,6 @@
                             Text = m.Text,
                             TimeStamp = m.TimeStamp
                         });
-                }
-                else
-                {
-                    return messages.Select(m => new Message
-                    {
-                        AuthorId = m.AuthorId,
-                        Author = m.Author.Name,
-                        Text = m.Text,
-                        TimeStamp = m.TimeStamp
-                    });
-                }
             }
 
             return null;

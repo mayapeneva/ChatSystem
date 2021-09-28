@@ -15,7 +15,8 @@
             configuration.GetSection(nameof(DatabaseSettings)).Bind(databaseSettings);
             services.AddSingleton(databaseSettings);
             services.AddDbContext<ChatSystemContext>(options =>
-                options.UseSqlServer(new DatabaseSettings(configuration).GetConnectionString()));
+                options.UseSqlServer(new DatabaseSettings(configuration).GetConnectionString())
+                .UseLazyLoadingProxies());
             //options.UseNpgsql(new DatabaseSettings(configuration).GetConnectionString()));
             //
             return services;
