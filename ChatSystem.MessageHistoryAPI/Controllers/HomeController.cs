@@ -9,6 +9,7 @@
 
     [ApiController]
     [Route("/api")]
+    [Produces("application/json")]
     public class HomeController : AbstractController
     {
         private readonly IMessageManager manager;
@@ -24,7 +25,7 @@
             return CreateOkOrErrorResult(manager.Get(cancellationToken, count));
         }
 
-        [HttpGet("messages")]
+        [HttpPost("messagesforperiod")]
         public IActionResult GetForPeriod([FromBody] TimeFrame timeFrame, CancellationToken cancellationToken)
         {
             return CreateOkOrErrorResult(manager.GetPerTimePeriod(timeFrame, cancellationToken));

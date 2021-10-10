@@ -3,7 +3,6 @@ namespace ChatSystem.App
     using ChatSystem.Data;
     using Contracts;
     using Infrastructure.ConfigurationSettings;
-    using MessageHistoryAPI;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -27,7 +26,7 @@ namespace ChatSystem.App
             services.AddScoped<IMessageService, MessageService>();
             services.RegisterRabbitMQ(Configuration)
                 .RegisterDatabase(Configuration)
-                .RegisterMessageRepository(Configuration);
+                .RegisterMessageRepository();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

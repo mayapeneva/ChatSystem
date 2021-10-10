@@ -5,44 +5,44 @@
     using System.Linq;
     using System.Net;
 
-    public class InternalResult<T>
+    public class Result<T>
     {
         private readonly HashSet<string> errors = new HashSet<string>();
 
-        public InternalResult(T data, int code = (int)HttpStatusCode.OK)
+        public Result(T data, int code = (int)HttpStatusCode.OK)
         {
             Data = data;
             IsSuccess = true;
             Code = code;
         }
 
-        public InternalResult(string message, int code, string error)
+        public Result(string message, int code, string error)
             : this(message, code)
         {
             if (string.IsNullOrWhiteSpace(error))
             {
-                throw new ArgumentNullException($"{nameof(InternalResult<T>)}.{nameof(Errors)}");
+                throw new ArgumentNullException($"{nameof(Result<T>)}.{nameof(Errors)}");
             }
 
             errors.Add(error);
         }
 
-        public InternalResult(string message, int code, IEnumerable<string> errorList)
+        public Result(string message, int code, IEnumerable<string> errorList)
             : this(message, code)
         {
             if (!errors.Any())
             {
-                throw new ArgumentNullException($"{nameof(InternalResult<T>)}.{nameof(Errors)}");
+                throw new ArgumentNullException($"{nameof(Result<T>)}.{nameof(Errors)}");
             }
 
             errorList.Select(e => errors.Add(e));
         }
 
-        private InternalResult(string message, int code)
+        private Result(string message, int code)
         {
             if (string.IsNullOrWhiteSpace(message))
             {
-                throw new ArgumentNullException($"{nameof(InternalResult<T>)}.{nameof(Message)}");
+                throw new ArgumentNullException($"{nameof(Result<T>)}.{nameof(Message)}");
             }
 
             Message = message;

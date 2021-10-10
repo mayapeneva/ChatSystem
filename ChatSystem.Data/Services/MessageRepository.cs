@@ -25,8 +25,7 @@
             {
                 var dbMessagesCount = messages.Count();
                 var takeCount = count > dbMessagesCount ? count : dbMessagesCount;
-
-                return messages.OrderByDescending(m => m.TimeStamp)
+                var result = messages.OrderByDescending(m => m.TimeStamp)
                         .Take(takeCount)
                         .Select(m => new Message
                         {
@@ -35,6 +34,11 @@
                             Text = m.Text,
                             TimeStamp = m.TimeStamp
                         });
+
+                if (result.Any())
+                {
+                    return result;
+                }
             }
 
             return null;
@@ -45,7 +49,7 @@
             var messages = db.Messages;
             if (messages.Any())
             {
-                return messages.Where(m => DateTime.Compare(m.TimeStamp, timeFrame.StartTime) > 0
+                var result = messages.Where(m => DateTime.Compare(m.TimeStamp, timeFrame.StartTime) > 0
                     && DateTime.Compare(m.TimeStamp,timeFrame.EndTime) < 0)
                         .Select(m => new Message
                         {
@@ -54,6 +58,11 @@
                             Text = m.Text,
                             TimeStamp = m.TimeStamp
                         });
+
+                if (result.Any())
+                {
+                    return result;
+                }
             }
 
             return null;

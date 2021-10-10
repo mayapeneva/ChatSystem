@@ -15,5 +15,7 @@
         public const string NoMessagesFound = "No messages found.";
 
         public const string Queue = "messages-queue";
+
+        public const string TimeFrameNotValid = "The time frame provided is not valid.";
     }
 }

@@ -22,7 +22,7 @@
 
         public IEnumerable<Message> GetLastMessages(CancellationToken cancellationToken)
         {
-            //TODO: call the API through an httpClient
+            //TODO: call the API through а httpClient
             return messageRepository.Get(cancellationToken, 20);
         }
 

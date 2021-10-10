@@ -1,5 +1,7 @@
 namespace ChatSystem.MessageHistoryAPI
 {
+    using ChatSystem.MessageHistoryAPI.Contracts;
+    using ChatSystem.MessageHistoryAPI.Services;
     using Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -20,7 +22,9 @@ namespace ChatSystem.MessageHistoryAPI
         {
             services.AddControllers();
             services.AddLogging();
-            services.RegisterMessageRepository(Configuration)
+            services.RegisterSwagger();
+            services.AddScoped<IMessageManager, MessageManager>();
+            services.RegisterMessageRepository()
                 .RegisterDatabase(Configuration);
         }
 
@@ -32,6 +36,13 @@ namespace ChatSystem.MessageHistoryAPI
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(x =>
+            {
+                x.SwaggerEndpoint("swagger/v1/swagger.json", "ChatSystem");
+                x.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 

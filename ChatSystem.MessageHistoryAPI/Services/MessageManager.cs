@@ -20,25 +20,25 @@
             this.repository = repository;
         }
 
-        public InternalResult<IEnumerable<Message>> Get(CancellationToken cancellationToken, int count = 0)
+        public Result<IEnumerable<Message>> Get(CancellationToken cancellationToken, int count = 0)
         {
             try
             {
                 var result = repository.Get(cancellationToken, count);
                 if (result is null)
                 {
-                    return new InternalResult<IEnumerable<Message>>(Constants.NoMessagesFound, InternalStatusCode.NotFound, string.Empty);
+                    return new Result<IEnumerable<Message>>(Constants.NoMessagesFound, InternalStatusCode.NotFound, Constants.NoMessagesFound);
                 }
 
-                return new InternalResult<IEnumerable<Message>>(result);
+                return new Result<IEnumerable<Message>>(result);
             }
             catch (Exception ex)
             {
-                return new InternalResult<IEnumerable<Message>>(Constants.CouldNotLoadMessages, InternalStatusCode.InternalServerError, ex.Message);
+                return new Result<IEnumerable<Message>>(Constants.CouldNotLoadMessages, InternalStatusCode.InternalServerError, ex.Message);
             }
         }
 
-        public InternalResult<IEnumerable<Message>> GetPerTimePeriod(TimeFrame timeFrame, CancellationToken cancellationToken)
+        public Result<IEnumerable<Message>> GetPerTimePeriod(TimeFrame timeFrame, CancellationToken cancellationToken)
         {
             try
             {
@@ -46,33 +46,33 @@
                 var validationResult = validator.Validate(timeFrame);
                 if (!validationResult.IsValid)
                 {
-                    return new InternalResult<IEnumerable<Message>>("The time frame provided is not valid.", InternalStatusCode.BadRequest, validationResult.Errors.Select(e => e.ErrorMessage));
+                    return new Result<IEnumerable<Message>>(Constants.TimeFrameNotValid, InternalStatusCode.BadRequest, validationResult.Errors.Select(e => e.ErrorMessage));
                 }
 
                 var result = repository.GetPerTimePeriod(timeFrame, cancellationToken);
                 if (result is null)
                 {
-                    return new InternalResult<IEnumerable<Message>>(Constants.NoMessagesFound, InternalStatusCode.NotFound, string.Empty);
+                    return new Result<IEnumerable<Message>>(Constants.NoMessagesFound, InternalStatusCode.NotFound, Constants.NoMessagesFound);
                 }
 
-                return new InternalResult<IEnumerable<Message>>(result);
+                return new Result<IEnumerable<Message>>(result);
             }
             catch (Exception ex)
             {
-                return new InternalResult<IEnumerable<Message>>(Constants.CouldNotLoadMessages, InternalStatusCode.InternalServerError, ex.Message);
+                return new Result<IEnumerable<Message>>(Constants.CouldNotLoadMessages, InternalStatusCode.InternalServerError, ex.Message);
             }
         }
 
-        public async Task<InternalResult<IEnumerable<Message>>> SaveAsync(IEnumerable<Message> messages, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<Message>>> SaveAsync(IEnumerable<Message> messages, CancellationToken cancellationToken)
         {
             try
             {
                 await repository.InsertAsync(messages, cancellationToken);
-                return new InternalResult<IEnumerable<Message>>(null);
+                return new Result<IEnumerable<Message>>(null);
             }
             catch (Exception ex)
             {
-                return new InternalResult<IEnumerable<Message>>(Constants.CouldNotSaveMessages, InternalStatusCode.InternalServerError, ex.Message);
+                return new Result<IEnumerable<Message>>(Constants.CouldNotSaveMessages, InternalStatusCode.InternalServerError, ex.Message);
             }
         }
     }

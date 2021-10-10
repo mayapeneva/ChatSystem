@@ -7,7 +7,7 @@
 
     public class AbstractController : ControllerBase
     {
-        protected IActionResult CreateOkOrErrorResult<T>(InternalResult<T> result, bool returnData = true)
+        protected IActionResult CreateOkOrErrorResult<T>(Result<T> result, bool returnData = true)
         {
             return !result.IsSuccess
                 ? CreateErrorResult(result)
@@ -16,7 +16,7 @@
                 : (IActionResult)Ok();
         }
 
-        protected IActionResult CreateErrorResult<T>(InternalResult<T> result)
+        protected IActionResult CreateErrorResult<T>(Result<T> result)
         {
             switch (result.Code)
             {

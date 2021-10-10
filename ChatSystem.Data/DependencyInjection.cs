@@ -22,7 +22,7 @@
             return services;
         }
 
-        public static IServiceCollection RegisterMessageRepository(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection RegisterMessageRepository(this IServiceCollection services)
         {
             services.AddScoped<IMessageRepository, MessageRepository>();
             return services;

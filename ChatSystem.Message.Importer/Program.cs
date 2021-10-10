@@ -2,7 +2,6 @@
 {
     using Data;
     using Infrastructure.ConfigurationSettings;
-    using MessageHistoryAPI;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -32,7 +31,7 @@
                             .RegisterIntervalSettings(hostContext.Configuration)
                             .RegisterRabbitMQ(hostContext.Configuration)
                             .RegisterDatabase(hostContext.Configuration)
-                            .RegisterMessageRepository(hostContext.Configuration)
+                            .RegisterMessageRepository()
                             .AddHostedService<ApplicationService>();
                     });
 
