@@ -6,6 +6,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading;
+    using System.Threading.Tasks;
 
     public partial class Chat
     {
@@ -17,15 +18,17 @@
 
         public List<Message> Messages { get; set; }
 
-        protected override void OnInitialized()
+        protected override async void OnInitialized()
         {
             Message = new Message();
 
-            var messages = MessageService.GetLastMessages(cancellationToken: CancellationToken.None);
-            Messages = messages is null ? new List<Message>() : new List<Message>(messages);
+            var messages = await MessageService.GetLastMessages(cancellationToken: CancellationToken.None);
+            Messages = messages.IsSuccess
+                ? new List<Message>(messages.Data)
+                : new List<Message>();
         }
 
-        protected void Create()
+        protected async Task Create()
         {
             if (Message.Text is null
                 || (Message.Author is null))
@@ -35,9 +38,17 @@
 
             //TODO use connection ID or add User Identity
             Message.AuthorId = Guid.NewGuid().ToString();
-            MessageService.SendAsync(Message);
+            var result = await MessageService.SendAsync(Message);
 
-            Messages.Add(Message);
+            if (result.IsSuccess)
+            {
+                Messages.Add(Message);
+            }
+            else
+            {
+                // TODO: return validation error
+            }
+
             if (Messages.Count > 20)
             {
                 Messages.RemoveAt(0);

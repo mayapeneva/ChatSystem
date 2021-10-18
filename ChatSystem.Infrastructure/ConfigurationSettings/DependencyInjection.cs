@@ -22,5 +22,13 @@
             services.AddSingleton(intervalSettings);
             return services;
         }
+
+        public static IServiceCollection RegisterMessageAPISettings(this IServiceCollection services, IConfiguration configuration)
+        {
+            var messageAPISettings = new MessageAPISettings(configuration);
+            configuration.GetSection(nameof(MessageAPISettings)).Bind(messageAPISettings);
+            services.AddSingleton(messageAPISettings);
+            return services;
+        }
     }
 }

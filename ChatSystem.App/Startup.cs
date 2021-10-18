@@ -26,7 +26,7 @@ namespace ChatSystem.App
             services.AddScoped<IMessageService, MessageService>();
             services.RegisterRabbitMQ(Configuration)
                 .RegisterDatabase(Configuration)
-                .RegisterMessageRepository();
+                .RegisterMessageAPISettings(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

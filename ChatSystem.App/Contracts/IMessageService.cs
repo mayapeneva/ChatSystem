@@ -7,8 +7,8 @@
 
     public interface IMessageService
     {
-        IEnumerable<Message> GetLastMessages(CancellationToken cancellationToken);
+        Task<Result<IEnumerable<Message>>> GetLastMessages(CancellationToken cancellationToken);
 
-        Task SendAsync<Message>(Message message);
+        Task<Result<string>> SendAsync<Message>(Message message);
     }
 }
