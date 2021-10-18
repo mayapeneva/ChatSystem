@@ -23,6 +23,7 @@ namespace ChatSystem.App
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddHttpClient();
             services.AddScoped<IMessageService, MessageService>();
             services.RegisterRabbitMQ(Configuration)
                 .RegisterDatabase(Configuration)

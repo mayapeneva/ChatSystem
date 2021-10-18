@@ -3,6 +3,7 @@
     using Contracts;
     using Infrastructure.Models;
     using Microsoft.AspNetCore.Components;
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Threading;
@@ -16,16 +17,17 @@
         [Parameter]
         public Message Message { get; set; }
 
-        public List<Message> Messages { get; set; }
+        public List<Message> Messages { get; set; } = new List<Message>();
 
         protected override async void OnInitialized()
         {
             Message = new Message();
 
             var messages = await MessageService.GetLastMessages(cancellationToken: CancellationToken.None);
-            Messages = messages.IsSuccess
-                ? new List<Message>(messages.Data)
-                : new List<Message>();
+            if (messages.IsSuccess)
+            {
+                Messages.AddRange(messages.Data);
+            }
         }
 
         protected async Task Create()
